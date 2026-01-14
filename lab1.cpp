@@ -24,8 +24,25 @@ void q4(string name) {
     cout << name << endl;
 }
 
+// Function for q5
+void char_shift(char *c) {
+    // Non-letters are ignored automatically
+    // If the letter is 'z' or 'Z', it becomes 'a' or 'A'
+    // If the letter is between 'a' and 'z' or 'A' and 'Z', it becomes the next letter
+    if (*c == 'z') {
+        *c = 'a';
+    } else if (*c == 'Z') {
+        *c = 'A';
+    } else if ((*c >= 'a' && *c <= 'z') || (*c >= 'A' && *c <= 'Z')) {
+        (*c) = (*c) + 1;
+    }
+}
+
 void q5(string name){
-    
+    for (int i = 0; i < name.length(); i++) {
+        char_shift(&name[i]); 
+    }
+    cout << name << endl;
 }
 
 int main() {
@@ -35,5 +52,6 @@ int main() {
     cout << name << endl;
     q3(name);
     q4(name);
+    q5(name);
     return 0;
 }

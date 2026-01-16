@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+
 using namespace std;
 
 //Turn the letters after the first letter of name to #
@@ -10,15 +12,22 @@ void q3(string name) {
 
 }
 
-
-//Get ASCII values of the characters in name then +1 
 void q4(string name) {
     //Process
-    //Get ASCII of the letter
-    //add +1 to the ASCII value
-    //Convert back to character
+    //Check if character is a letter and handle wrap around
+    //Add +1 to the ASCII value if it is a letter
     for (int i = 0; i < name.length(); i++) {
-        name[i] = char(int(name[i]) + 1);
+
+        if (name[i] == 'z') {
+            name[i] = 'a';
+        } else if (name[i] == 'Z') {
+            name[i] = 'A';
+        } else if ((name[i] >= 'a' && name[i] <= 'z') || (name[i] >= 'A' && name[i] <= 'Z')) {
+    
+            // Only increment if it's a letter (excluding z/Z which are handled above)
+            name[i] = char(int(name[i]) + 1);
+        }
+        // If it is a space ' ' or symbol, it skips all and remains unchanged
     }
     
     cout << name << endl;
@@ -33,7 +42,7 @@ void char_shift(char *c) {
         *c = 'a';
     } else if (*c == 'Z') {
         *c = 'A';
-    } else if ((*c >= 'a' && *c <= 'z') || (*c >= 'A' && *c <= 'Z')) {
+    } else if ((*c >= 'a' && *c < 'z') || (*c >= 'A' && *c < 'Z')) {
         (*c) = (*c) + 1;
     }
 }
@@ -47,7 +56,7 @@ void q5(string name){
 
 int main() {
     string name;
-    cin >> name;
+    getline(cin, name);
     //Lab1 prints 
     cout << name << endl;
     q3(name);

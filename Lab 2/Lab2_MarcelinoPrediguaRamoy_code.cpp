@@ -7,6 +7,27 @@
 
 using namespace std;
 
+
+
+
+bool is_digits(std::string s){
+
+    //iterate through the string(char[]) to see if there are non-digit characters
+    //and or whitespaces
+    //whitespaces and characters = a message 
+    //no whitespaces and characters = a number 
+    //start at 1 to account for the space after coordinates
+    for (int index = 1; index < s.length(); ++index){
+        int asc = s[index];
+         //check if the ascii values of each character is between 48 and 57(0-9)
+        if (!(asc >= 48 && asc <= 57)){
+            return false;
+    }
+    }
+    return true;
+}
+
+
 int main() {
     int N;
     // Read the first line: A single positive integer N
@@ -30,8 +51,22 @@ int main() {
 
         // Display the agent's coordinates
         cout << "Agent #" << i << " is at (" << x << ", " << y << ")" << endl;
+        //cout << "Message:" << message << endl;
+
+        //checks for whitespaces to indicate string or int
+
+        
+
+        if (is_digits(message)){
+            //if message is a number, convert string to int
+            int num = atoi(message.c_str());
+            cout << "Agent #" << i << " holds up the number: " << num << endl;
+        } else {
+            cout << "Agent #" << i << " yells: " << "\"" << message << "\"" << endl;
+        }
+        
+
+    
     }
-
     return 0;
-
 }

@@ -28,7 +28,7 @@ int main() {
         string message;
         getline(cin, message);
 
-        // Display the agent's coordinates [cite: 10]
+        // Display the agent's coordinates
         cout << "Agent #" << i << " is at (" << x << ", " << y << ")" << endl;
     }
 

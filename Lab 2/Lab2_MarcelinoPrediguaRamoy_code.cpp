@@ -30,10 +30,10 @@ bool is_digits(std::string s){
 
 
 string trim_spaces(string s) {
+    
     // Find the index of the first character that is not a space
     // 'string::npos' is a special constant to indicate that a character (in this case) as not found 
     // size_t is used because find_first_not_of returns this type
-
     size_t start = s.find_first_not_of(" ");
 
     // If start is npos, the string is entirely spaces or empty

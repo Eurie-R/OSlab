@@ -4,11 +4,9 @@
 
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
-
-
-
 
 bool is_digits(std::string s){
 
@@ -16,8 +14,12 @@ bool is_digits(std::string s){
     //and or whitespaces
     //whitespaces and characters = a message 
     //no whitespaces and characters = a number 
-    //start at 1 to account for the space after coordinates
-    for (int index = 1; index < s.length(); ++index){
+
+    if (s.empty()) {
+        return false;
+    }
+
+    for (int index = 0; index < s.length(); ++index){
         int asc = s[index];
          //check if the ascii values of each character is between 48 and 57(0-9)
         if (!(asc >= 48 && asc <= 57)){
@@ -27,6 +29,29 @@ bool is_digits(std::string s){
     return true;
 }
 
+
+string trim_spaces(string s) {
+    // Find the index of the first character that is not a space
+    // 'string::npos' is a special constant to indicate that a character (in this case) as not found 
+    // size_t is used because find_first_not_of returns this type
+
+    size_t start = s.find_first_not_of(" ");
+
+    // If start is npos, the string is entirely spaces or empty
+    if (start == string::npos) {
+        return "";
+    }
+
+    // Find the index of the last character that is not a space
+    size_t end = s.find_last_not_of(" ");
+
+    // Returns the substring containing only the text 
+    // substr(start_index , length), where length is end - start + 1
+    // Ex: indices 2 to 4 (2, 3, 4) has 3 items, so we add + 1 to get 3
+    // 4 - 2 + 1 = 3
+
+    return s.substr(start, end - start + 1);
+}
 
 int main() {
     int N;
@@ -53,20 +78,17 @@ int main() {
         cout << "Agent #" << i << " is at (" << x << ", " << y << ")" << endl;
         //cout << "Message:" << message << endl;
 
-        //checks for whitespaces to indicate string or int
-
+        //Checks for whitespaces to indicate string or int
+        string clean_message = trim_spaces(message);
         
 
-        if (is_digits(message)){
+        if (is_digits(clean_message)){
             //if message is a number, convert string to int
-            int num = atoi(message.c_str());
+            int num = atoi(clean_message.c_str());
             cout << "Agent #" << i << " holds up the number: " << num << endl;
         } else {
-            cout << "Agent #" << i << " yells: " << "\"" << message << "\"" << endl;
+            cout << "Agent #" << i << " yells: " << "\"" << clean_message << "\"" << endl;
         }
-        
-
-    
     }
     return 0;
 }

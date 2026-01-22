@@ -86,7 +86,7 @@ int main() {
             int num = atoi(clean_message.c_str());
             cout << "Agent #" << i << " holds up the number: " << num << endl;
         } else {
-            cout << "Agent #" << i << " yells: " << "\"" << clean_message << "\"" << endl;
+            cout << "Agent #" << i << " yells: " << "\""<< clean_message << "\"" << endl;
         }
     }
     return 0;

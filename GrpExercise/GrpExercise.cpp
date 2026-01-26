@@ -106,6 +106,30 @@ struct IntList{
 
 };
 
+//IntStack
+// 
+struck IntStack {
+
+private:
+    IntNode* top;   // Pointer to top of the stack
+    int count;      // Tracks the current size
+
+public:
+    // Constructor
+    // Initialize the stack
+    IntStack() {
+        top = NULL;
+        count = 0;
+    }
+
+    // Destructor
+    // Ensure no memory leaks
+    ~IntStack() {
+        
+    }
+
+}
+
 int main() {
     IntList list;
 

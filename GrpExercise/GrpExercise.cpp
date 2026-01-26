@@ -52,4 +52,83 @@ struct IntList{
         return node->next;
     }
 
+    IntNode* getNodeatPosition(int pos){
+        if(head == NULL) return NULL;
+
+        IntNode* current = head;
+        int count = 1;
+
+        while(current !=NULL){
+            if(count == pos){{
+                return current;
+            }}
+            current = current->next;
+            count++;
+        }
+        return NULL;
+    }
+
+    IntNode* deleteNode(IntNode* head, int pos){
+        if(head == NULL) return NULL;
+
+        if(pos == 1){
+            IntNode* temp = head;
+            //move head to next node 
+            head = head->next;
+            delete temp;
+            cout << "Node Deleted at position 1" << endl;
+        }
+
+        //Initialize head and previous pointers
+        IntNode* current = head;
+        IntNode* previous = NULL;
+        //Iterator to traverse the list 
+        int count = 1;
+
+        //Traversal
+        //Ex. pos = 5 
+        while(current !=NULL && count < pos){
+            previous = current;
+            //Set current to next node 
+            current = current->next;
+            count++;
+        }
+
+        //If current is NULL, position is more than number of nodes
+        if(current == NULL) return NULL;
+        //Unlink the node from linked list
+        previous->next = current->next;
+        delete current;
+        cout << "Node Deleted at position " << pos << endl;
+        return head;
+
+    }
+
 };
+
+int main() {
+    IntList list;
+
+    //CREATE FIRST NODE 
+    IntNode* firstNode = list.createFirstNode(10);
+    list.insertAfter(firstNode, 20);
+    IntNode* secondNode = list.getNodeAfter(firstNode);
+    list.insertAfter(secondNode, 18);
+    IntNode* thirdNode = list.getNodeAfter(secondNode);
+    list.insertAfter(thirdNode, 25);
+
+    cout << "Node at position 3: " << list.getNodeatPosition(3)->data << endl;
+
+    //PRINT LIST
+    IntNode* current = list.getFirstNode();
+    cout << "Linked List: " << endl;
+    while(current != NULL){
+        cout << current->data << " ";
+        current = list.getNodeAfter(current);
+    }
+
+    list.deleteNode(list.getFirstNode(), 4);
+    list.deleteNode(list.getFirstNode(), 3);
+    list.deleteNode(list.getFirstNode(), 2);
+    list.deleteNode(list.getFirstNode(), 1);
+}

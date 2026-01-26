@@ -106,8 +106,11 @@ struct IntList{
 
 };
 
-//IntStack
-// 
+// IntStack
+// This struct represents a stack of integers
+// It has a pointer at the top of the stack
+// It also counts the current size of the stack
+// It can push and pop integers in and out of the stack
 struct IntStack {
 
 private:
@@ -192,4 +195,27 @@ int main() {
     list.deleteNode(list.getFirstNode(), 3);
     list.deleteNode(list.getFirstNode(), 2);
     list.deleteNode(list.getFirstNode(), 1);
+
+
+    // STACK
+    IntStack stack;
+
+    // Push
+    cout << "Pushing: 10 20 30 40 50" << endl;
+    stack.push(10);
+    stack.push(20);
+    stack.push(30);
+    stack.push(40);
+    stack.push(50);
+
+    // Current size
+    cout << "Current size: " << stack.size() << endl;
+
+    // Pop
+    cout << "Popping: " << stack.pop() << endl;
+    cout << "Popping: " << stack.pop() << endl;
+    cout << "Current size: " << stack.size() << endl;
+    cout << "Popping: " << stack.pop() << endl;
+    cout << "Current size after popping: " << stack.size() << endl;
+
 }

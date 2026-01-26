@@ -125,10 +125,47 @@ public:
     // Destructor
     // Ensure no memory leaks
     ~IntStack() {
-        
+        while(top != NULL) {
+            IntNode* temp = top;
+            top = top->next;
+            delete temp;
+        }
     }
 
-}
+    // Push function
+    // This add new node to the top of the stack
+    void push(int value) {
+        IntNode* newNode = new IntNode;
+        newNode->data = value;
+        newNode->next = top;
+        top = newNode;
+        count++;
+    }
+
+    // Pop function
+    // This removes the top node of the stack
+    int pop() {
+        if (top == NULL) {
+            cout << "The stack is empty. We can't pop anything." << endl;
+            return -1;
+        }
+
+        // Move the top to the next node
+        // Remove the old top node
+        int poppedValue = top->data;
+        IntNode* temp = top;
+        top = top->next;
+        delete temp;
+        count--;
+        return poppedValue;
+    }
+
+    // Current size
+    // This returns the number of nodes in the stack
+    int size() {
+        return count;
+    }
+};
 
 int main() {
     IntList list;

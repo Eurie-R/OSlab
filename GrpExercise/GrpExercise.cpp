@@ -108,7 +108,7 @@ struct IntList{
 
 //IntStack
 // 
-struck IntStack {
+struct IntStack {
 
 private:
     IntNode* top;   // Pointer to top of the stack

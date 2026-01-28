@@ -85,7 +85,7 @@ struct IntList{
     }
 
     void deleteNode(int pos) {
-        if(head == NULL) return;
+        if(head == NULL || pos < 1) return;
 
         //deleting head
         if(pos == 1){

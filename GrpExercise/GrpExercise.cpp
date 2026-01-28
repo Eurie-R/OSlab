@@ -23,7 +23,18 @@ struct IntList{
         head = NULL;
     }
 
+    ~IntList() {
+        IntNode* current = head;
+        while (current != NULL) {
+            IntNode* nextNode = current->next;
+            delete current;
+            current = nextNode;
+        }
+    }
+
     IntNode* createFirstNode(int value){
+        if (head != NULL) return head;
+        
         head = new IntNode();
         head->data = value;
         head->next = NULL;
@@ -68,15 +79,17 @@ struct IntList{
         return NULL;
     }
 
-    IntNode* deleteNode(IntNode* head, int pos){
-        if(head == NULL) return NULL;
+    void deleteNode(int pos) {
+        if(head == NULL) return;
 
+        //deleting head
         if(pos == 1){
             IntNode* temp = head;
             //move head to next node 
             head = head->next;
             delete temp;
             cout << "Node Deleted at position 1" << endl;
+            return;
         }
 
         //Initialize head and previous pointers
@@ -95,13 +108,12 @@ struct IntList{
         }
 
         //If current is NULL, position is more than number of nodes
-        if(current == NULL) return NULL;
+        if(current == NULL) return;
         //Unlink the node from linked list
         previous->next = current->next;
         delete current;
+        cout << endl;
         cout << "Node Deleted at position " << pos << endl;
-        return head;
-
     }
 
 };
@@ -181,7 +193,9 @@ int main() {
     IntNode* thirdNode = list.getNodeAfter(secondNode);
     list.insertAfter(thirdNode, 25);
 
-    cout << "Node at position 3: " << list.getNodeatPosition(3)->data << endl;
+    if (list.getNodeatPosition(3) != NULL) {
+        cout << "Node at position 3: " << list.getNodeatPosition(3)->data << endl;
+    }
 
     //PRINT LIST
     IntNode* current = list.getFirstNode();
@@ -191,11 +205,17 @@ int main() {
         current = list.getNodeAfter(current);
     }
 
-    list.deleteNode(list.getFirstNode(), 4);
-    list.deleteNode(list.getFirstNode(), 3);
-    list.deleteNode(list.getFirstNode(), 2);
-    list.deleteNode(list.getFirstNode(), 1);
+    list.deleteNode(4);
+    list.deleteNode(1);
 
+    // Verify deleted
+    cout << "List after deletion: ";
+    current = list.getFirstNode();
+    while(current != NULL){
+        cout << current->data << " ";
+        current = list.getNodeAfter(current);
+    }
+    cout << endl << endl;
 
     // STACK
     IntStack stack;
@@ -218,4 +238,5 @@ int main() {
     cout << "Popping: " << stack.pop() << endl;
     cout << "Current size after popping: " << stack.size() << endl;
 
+    return 0;
 }

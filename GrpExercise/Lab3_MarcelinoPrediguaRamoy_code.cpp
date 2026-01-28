@@ -38,7 +38,10 @@ struct IntList{
     }
 
     IntNode* createFirstNode(int value){
-        if (head != NULL) return head;
+        if (head != NULL) {
+            cout << "List already exists. Returning existing head." << endl;
+            return head;
+        }
         
         head = new IntNode();
         head->data = value;
@@ -47,7 +50,10 @@ struct IntList{
     }
 
     IntNode* insertAfter(IntNode* node, int value){
-        if(node == NULL) return NULL;
+        if(node == NULL) {
+            cout << "Cannot insert: Target node is null." << endl;
+            return NULL;
+        }
         //Create new node
         IntNode* newNode = new IntNode();
         //Set data of the inserted node
@@ -85,7 +91,14 @@ struct IntList{
     }
 
     void deleteNode(int pos) {
-        if(head == NULL || pos < 1) return;
+        if(head == NULL) {
+            cout << "Cannot delete, list is empty." << endl; 
+            return;
+        }
+        if(pos < 1) {
+            cout << "Cannot delete, invalid position." << endl;
+            return;
+        }
 
         //deleting head
         if(pos == 1){
@@ -113,7 +126,10 @@ struct IntList{
         }
 
         //If current is NULL, position is more than number of nodes
-        if(current == NULL) return;
+        if(current == NULL) {
+            cout << "Position" << pos << " is out of bounds." << endl;
+            return;
+        }
         //Unlink the node from linked list
         previous->next = current->next;
         delete current;
@@ -245,6 +261,6 @@ int main() {
     cout << "Popping: " << stack.pop() << endl;
     cout << "Current size after popping: " << stack.size() << endl;
     stack.pop();
-    
+
     return 0;
 }

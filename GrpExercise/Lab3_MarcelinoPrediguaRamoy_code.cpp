@@ -241,7 +241,10 @@ int main() {
     cout << "Popping: " << stack.pop() << endl;
     cout << "Current size: " << stack.size() << endl;
     cout << "Popping: " << stack.pop() << endl;
+    cout << "Popping: " << stack.pop() << endl;
+    cout << "Popping: " << stack.pop() << endl;
     cout << "Current size after popping: " << stack.size() << endl;
+    cout << "Popping: " << stack.pop() << endl;
 
     return 0;
 }

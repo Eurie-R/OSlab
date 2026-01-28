@@ -1,4 +1,9 @@
 #include <iostream>
+
+// MARCELINO, Jaren
+// PREDIGUA, Dave
+// RAMOY, Lorenzo Uriel
+
 using namespace std;
 
 //Implement an IntNode struct that cointaains a piece of data (int) 

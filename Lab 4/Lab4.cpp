@@ -9,7 +9,7 @@ int dummy(int x){
 
 // Number 2
 int dummy2(int x){ 
-    return x * 4; 
+    return x * 41; 
 }
 
 // Number 3

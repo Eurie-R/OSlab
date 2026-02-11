@@ -14,12 +14,12 @@ int dummy2(int x){
 
 // Number 3
 int dummy3(int x){ 
-    return x * 4; 
+    return x * 63; 
 }
 
 // Number 4
 int dummy4(int x){ 
-    return x * 4; 
+    return x * -5; 
 }
 
 // Number 5

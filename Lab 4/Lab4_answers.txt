@@ -38,6 +38,24 @@ output = output - x     // subl	%edx, %eax
                         // output == 63x
 
 4.
+Generated Assembly Code:
+	pushq	%rbp
+
+	movq	%rsp, %rbp
+
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %edx
+	movl	%edx, %eax
+	sall	$2, %eax
+	addl	%edx, %eax
+	negl	%eax
+	popq	%rbp
+
+Proof:
+
+
+
+Pseudo-code (C++):
 
 
 

@@ -9,7 +9,33 @@ Once finished, transfer the answers to a PDF file.
 
 
 3.
+Generated Assembly Code:
+	pushq	%rbp
 
+	movq	%rsp, %rbp
+
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %edx
+	movl	%edx, %eax
+	sall	$6, %eax
+	subl	%edx, %eax
+	popq	%rbp
+
+Proof:
+movl	%edx, %eax  : This line initializes the eax register with the value of edx which is x.
+sall	$6, %eax    : Then, the eax register is shifteed to the left by 6 which is equivalent to multipying x by 2^6 (64). The current value of eax is 64x.
+subl	%edx, %eax  : Lastly, it subtracts x (stored in edx) from 64x (stored in eax). The final value of eax is 63x.
+
+Pseudo-code (C++):
+Input x is in register edx.
+
+output = x;             // movl %edx, %eax
+                        // output == x
+output = output << 6    // sall	$6, %eax
+                        // output == x * 2^6
+output = output - x     // subl	%edx, %eax
+                        // output == 64x - x
+                        // output == 63x
 
 4.
 

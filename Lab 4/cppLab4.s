@@ -89,6 +89,26 @@ _Z6dummy4i:
 	.cfi_endproc
 .LFE3:
 	.size	_Z6dummy4i, .-_Z6dummy4i
+	.globl	_Z6dummy5i
+	.type	_Z6dummy5i, @function
+_Z6dummy5i:
+.LFB4:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	imull	$61, %eax, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE4:
+	.size	_Z6dummy5i, .-_Z6dummy5i
 	.ident	"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
 	.section	.note.GNU-stack,"",@progbits
 	.section	.note.gnu.property,"a"

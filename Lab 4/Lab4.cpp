@@ -23,4 +23,6 @@ int dummy4(int x){
 }
 
 // Number 5
-
+int dummy5(int x){ 
+    return x * 61; 
+}

@@ -72,6 +72,6 @@ output = -output;       // negl	%eax
                         // output == -5x
 
 5.
-
+Duplicate the function one final time but compute x*61.  Something unexpected happens.  What do you think is the reason for this behavior?  (If you do research about this, cite your references for your explanation.)
 
 6.

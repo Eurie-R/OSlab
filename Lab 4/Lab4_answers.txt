@@ -31,9 +31,9 @@ Input x is in register edx.
 
 output = x;             // movl %edx, %eax
                         // output == x
-output = output << 6    // sall	$6, %eax
-                        // output == x * 2^6
-output = output - x     // subl	%edx, %eax
+output = output << 6;   // sall	$6, %eax
+                        // output == x * 2^6 == 64x
+output = output - x;    // subl	%edx, %eax
                         // output == 64x - x
                         // output == 63x
 
@@ -53,13 +53,23 @@ Generated Assembly Code:
 
 Proof:
 movl	%edx, %eax      : This line initializes the eax register with the value of edx which is x.
-sall	$2, %eax        :
-addl	%edx, %eax      :
-negl	%eax            :
+sall	$2, %eax        : Then, the eax register is shifted to the left by 2 which is equivalent to multipying x by 2^2 (4). The current value of eax is 4x.
+addl	%edx, %eax      : Then, it adds x (stored in edx) to 4x (stored in eax). The current value of eax is 5x.
+negl	%eax            : Lastly, we need to negate the value of eax which is equivalent to subtracting 5x from 0. The final value of eax is -5x.
 
 Pseudo-code (C++):
+Input x is in register edx.
 
-
+output = x;             // movl %edx, %eax
+                        // output == x
+output = output << 2;   // sall	$2, %eax
+                        // output == x * 2^2 == 4x
+output = output + x;    // subl	%edx, %eax
+                        // output == 4x + x
+                        // output == 5x
+output = -output;       // negl	%eax
+                        // output == -(5x)
+                        // output == -5x
 
 5.
 

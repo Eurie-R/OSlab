@@ -72,6 +72,24 @@ output = -output;       // negl	%eax
                         // output == -5x
 
 5.
+.LFB4:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	movl	%edi, -4(%rbp)
+	movl	-4(%rbp), %eax
+	imull	$61, %eax, %eax
+	popq	%rbp
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+
 Duplicate the function one final time but compute x*61.  Something unexpected happens.  What do you think is the reason for this behavior?  (If you do research about this, cite your references for your explanation.)
+
+The unexpected behavior is that instead of using arithmetic shifts, it directly use the imul (integer multiply) for x * 61. While it is possible to use series of arithmetic shifts and additions (e.g., x * 64 - x * 3, but x * 3 = x * 2 + x or x * 3 = x * 4 - x), a single imul instruction  (e.g., x * 61 = 61x) is more compact and faster. The "unexpected behavior" because the compiler’s cost analysis model determined that a single imul instruction is more efficient than the equivalent sequence of shifting, addition, and subtraction. 
 
 6.

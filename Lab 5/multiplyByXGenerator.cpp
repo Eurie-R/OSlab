@@ -20,7 +20,81 @@ int main(int argc, char* argv[]) {
     string mangledName = "_Z" + to_string(nameLen) + funcName + "P8IntArray";
 
     // Assembly code using cout
-
+    cout << "\t.file\t\"" << funcName << ".cpp\"" << endl;
+    cout << "\t.text" << endl;
+    cout << "\t.globl\t" << mangledName << endl;
+    cout << "\t.type\t" << mangledName << ", @function" << endl;
+    cout << mangledName << ":" << endl;
+    cout << ".LFB0:" << endl;
+    cout << "\t.cfi_startproc" << endl;
+    cout << "\tendbr64" << endl;
+    cout << "\tpushq\t%rbp" << endl;
+    cout << "\t.cfi_def_cfa_offset 16" << endl;
+    cout << "\t.cfi_offset 6, -16" << endl;
+    cout << "\tmovq\t%rsp, %rbp" << endl;
+    cout << "\t.cfi_def_cfa_register 6" << endl;
+    
+    // Note: The original assembly still had the second parameter setup (movl %esi, -28(%rbp)). 
+    // Used the multiplyBy61.s as a template
+    cout << "\tmovq\t%rdi, -24(%rbp)" << endl;
+    cout << "\tmovl\t%esi, -28(%rbp)" << endl;
+    cout << "\tmovl\t$0, -4(%rbp)" << endl;
+    cout << "\tjmp\t.L2" << endl;
+    
+    cout << ".L3:" << endl;
+    cout << "\tmovq\t-24(%rbp), %rax" << endl;
+    cout << "\tmovq\t8(%rax), %rax" << endl;
+    cout << "\tmovl\t-4(%rbp), %edx" << endl;
+    cout << "\tmovslq\t%edx, %rdx" << endl;
+    cout << "\tsalq\t$2, %rdx" << endl;
+    cout << "\taddq\t%rdx, %rax" << endl;
+    cout << "\tmovl\t(%rax), %ecx" << endl;
+    cout << "\tmovq\t-24(%rbp), %rax" << endl;
+    cout << "\tmovq\t8(%rax), %rax" << endl;
+    cout << "\tmovl\t-4(%rbp), %edx" << endl;
+    cout << "\tmovslq\t%edx, %rdx" << endl;
+    cout << "\tsalq\t$2, %rdx" << endl;
+    cout << "\taddq\t%rax, %rdx" << endl;
+    
+    // --- DYNAMIC MULTIPLIER INJECTION ---
+    cout << "\timull\t$" << x_str << ", %ecx, %eax" << endl;
+    
+    cout << "\tmovl\t%eax, (%rdx)" << endl;
+    cout << "\taddl\t$1, -4(%rbp)" << endl;
+    
+    cout << ".L2:" << endl;
+    cout << "\tmovq\t-24(%rbp), %rax" << endl;
+    cout << "\tmovl\t(%rax), %eax" << endl;
+    cout << "\tcmpl\t%eax, -4(%rbp)" << endl;
+    cout << "\tjl\t.L3" << endl;
+    
+    cout << "\tnop" << endl;
+    cout << "\tnop" << endl;
+    cout << "\tpopq\t%rbp" << endl;
+    cout << "\t.cfi_def_cfa 7, 8" << endl;
+    cout << "\tret" << endl;
+    cout << "\t.cfi_endproc" << endl;
+    
+    cout << ".LFE0:" << endl;
+    cout << "\t.size\t" << mangledName << ", .-" << mangledName << endl;
+    cout << "\t.ident\t\"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\"" << endl;
+    cout << "\t.section\t.note.GNU-stack,\"\",@progbits" << endl;
+    cout << "\t.section\t.note.gnu.property,\"a\"" << endl;
+    cout << "\t.align 8" << endl;
+    cout << "\t.long\t1f - 0f" << endl;
+    cout << "\t.long\t4f - 1f" << endl;
+    cout << "\t.long\t5" << endl;
+    cout << "0:" << endl;
+    cout << "\t.string\t\"GNU\"" << endl;
+    cout << "1:" << endl;
+    cout << "\t.align 8" << endl;
+    cout << "\t.long\t0xc0000002" << endl;
+    cout << "\t.long\t3f - 2f" << endl;
+    cout << "2:" << endl;
+    cout << "\t.long\t0x3" << endl;
+    cout << "3:" << endl;
+    cout << "\t.align 8" << endl;
+    cout << "4:" << endl;
     
     return 0;
 }

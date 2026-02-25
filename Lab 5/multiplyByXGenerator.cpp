@@ -7,7 +7,7 @@ using namespace std;
 int main(int argc, char* argv[]) {
     // The program must invoked with a single parameter
     if (argc != 2) {
-        cerr << "Usage: " << argv[0] << " <size>" << endl;
+        cerr << "Usage: " << argv[0] << " <constant>" << endl;
         return 1;
     }
 
@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
     string mangledName = "_Z" + to_string(nameLen) + funcName + "P8IntArray";
 
     // Assembly code using cout
+    // Header
     cout << "\t.file\t\"" << funcName << ".cpp\"" << endl;
     cout << "\t.text" << endl;
     cout << "\t.globl\t" << mangledName << endl;
@@ -28,19 +29,22 @@ int main(int argc, char* argv[]) {
     cout << ".LFB0:" << endl;
     cout << "\t.cfi_startproc" << endl;
     cout << "\tendbr64" << endl;
+    // Stack frame setup
     cout << "\tpushq\t%rbp" << endl;
     cout << "\t.cfi_def_cfa_offset 16" << endl;
     cout << "\t.cfi_offset 6, -16" << endl;
     cout << "\tmovq\t%rsp, %rbp" << endl;
     cout << "\t.cfi_def_cfa_register 6" << endl;
     
-    // Note: The original assembly still had the second parameter setup (movl %esi, -28(%rbp)). 
     // Used the multiplyBy61.s as a template
+    // Saving the parameters and setting the loop counter
     cout << "\tmovq\t%rdi, -24(%rbp)" << endl;
     cout << "\tmovl\t%esi, -28(%rbp)" << endl;
     cout << "\tmovl\t$0, -4(%rbp)" << endl;
     cout << "\tjmp\t.L2" << endl;
     
+    // Body
+    // Address calculation
     cout << ".L3:" << endl;
     cout << "\tmovq\t-24(%rbp), %rax" << endl;
     cout << "\tmovq\t8(%rax), %rax" << endl;
@@ -49,6 +53,7 @@ int main(int argc, char* argv[]) {
     cout << "\tsalq\t$2, %rdx" << endl;
     cout << "\taddq\t%rdx, %rax" << endl;
     cout << "\tmovl\t(%rax), %ecx" << endl;
+    // Reloading the registers
     cout << "\tmovq\t-24(%rbp), %rax" << endl;
     cout << "\tmovq\t8(%rax), %rax" << endl;
     cout << "\tmovl\t-4(%rbp), %edx" << endl;
@@ -56,7 +61,7 @@ int main(int argc, char* argv[]) {
     cout << "\tsalq\t$2, %rdx" << endl;
     cout << "\taddq\t%rax, %rdx" << endl;
     
-    // --- DYNAMIC MULTIPLIER INJECTION ---
+    // Injecting the constant
     cout << "\timull\t$" << x_str << ", %ecx, %eax" << endl;
     
     cout << "\tmovl\t%eax, (%rdx)" << endl;

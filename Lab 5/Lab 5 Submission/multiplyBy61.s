@@ -29,7 +29,27 @@ _Z12multiplyBy61P8IntArray:
 	movslq	%edx, %rdx
 	salq	$2, %rdx
 	addq	%rax, %rdx
-	imull	$61, %ecx, %eax
+	#NO IMUL: Russian Peasant shift-and-add begins
+	xorl	%eax, %eax			# result = 0
+	# bit 0: result += (ecx << 0)  [contributes 1x]
+	addl	%ecx, %eax			
+	# bit 2: result += (ecx << 2)  [contributes 4x]
+	movl	%ecx, %r8d			
+	shll	$2, %r8d				# r8d = ecx << 2  (ecx * 4)
+	addl	%r8d, %eax			
+	# bit 3: result += (ecx << 3)  [contributes 8x]
+	movl	%ecx, %r8d			
+	shll	$3, %r8d				# r8d = ecx << 3  (ecx * 8)
+	addl	%r8d, %eax			
+	# bit 4: result += (ecx << 4)  [contributes 16x]
+	movl	%ecx, %r8d			
+	shll	$4, %r8d				# r8d = ecx << 4  (ecx * 16)
+	addl	%r8d, %eax			
+	# bit 5: result += (ecx << 5)  [contributes 32x]
+	movl	%ecx, %r8d			
+	shll	$5, %r8d				# r8d = ecx << 5  (ecx * 32)
+	addl	%r8d, %eax			
+	# --- Russian Peasant shift-and-add ends ---
 	movl	%eax, (%rdx)
 	addl	$1, -4(%rbp)
 .L2:

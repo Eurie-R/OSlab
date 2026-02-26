@@ -38,23 +38,24 @@ int main(int argc, char* argv[]) {
     
     // Used the multiplyBy61.s as a template
     // Saving the parameters and setting the loop counter
-    cout << "\tmovq\t%rdi, -24(%rbp)" << endl;
-    cout << "\tmovl\t%esi, -28(%rbp)" << endl;
-    cout << "\tmovl\t$0, -4(%rbp)" << endl;
+    cout << "\tmovq\t%rdi, -24(%rbp)" << endl;              // %rdi = first argument: IntArray* p
+    cout << "\tmovl\t%esi, -28(%rbp)" << endl;              // %esi = second argument: int x
+    cout << "\tmovl\t$0, -4(%rbp)" << endl;                 // stores loop index
     cout << "\tjmp\t.L2" << endl;
     
     // Body
     // Address calculation
     cout << ".L3:" << endl;
-    cout << "\tmovq\t-24(%rbp), %rax" << endl;
-    cout << "\tmovq\t8(%rax), %rax" << endl;
-    cout << "\tmovl\t-4(%rbp), %edx" << endl;
-    cout << "\tmovslq\t%edx, %rdx" << endl;
-    cout << "\tsalq\t$2, %rdx" << endl;
-    cout << "\taddq\t%rdx, %rax" << endl;
-    cout << "\tmovl\t(%rax), %ecx" << endl;
+    cout << "\tmovq\t-24(%rbp), %rax" << endl;              // %rax = p
+    cout << "\tmovq\t8(%rax), %rax" << endl;                // %rax = p->data
+    cout << "\tmovl\t-4(%rbp), %edx" << endl;               // %edx = i
+    cout << "\tmovslq\t%edx, %rdx" << endl;                 // %rdx = i
+    cout << "\tsalq\t$2, %rdx" << endl;                     // %rdx = i * 4
+    cout << "\taddq\t%rdx, %rax" << endl;                   // %rax = &elements[i]
+    cout << "\tmovl\t(%rax), %ecx" << endl;                 // %ecx = elements[i]
     // Reloading the registers
-    cout << "\tmovq\t-24(%rbp), %rax" << endl;
+    // We do this to make sure we are using corrent values
+    cout << "\tmovq\t-24(%rbp), %rax" << endl;           
     cout << "\tmovq\t8(%rax), %rax" << endl;
     cout << "\tmovl\t-4(%rbp), %edx" << endl;
     cout << "\tmovslq\t%edx, %rdx" << endl;
@@ -62,10 +63,10 @@ int main(int argc, char* argv[]) {
     cout << "\taddq\t%rax, %rdx" << endl;
     
     // Injecting the constant
-    cout << "\timull\t$" << x_str << ", %ecx, %eax" << endl;
+    cout << "\timull\t$" << x_str << ", %ecx, %eax" << endl;    // %eax = %ecx * 61
     
-    cout << "\tmovl\t%eax, (%rdx)" << endl;
-    cout << "\taddl\t$1, -4(%rbp)" << endl;
+    cout << "\tmovl\t%eax, (%rdx)" << endl;                 // Store it into elements[i]
+    cout << "\taddl\t$1, -4(%rbp)" << endl;                 // Increment i (loop counter)
     
     cout << ".L2:" << endl;
     cout << "\tmovq\t-24(%rbp), %rax" << endl;
@@ -73,11 +74,12 @@ int main(int argc, char* argv[]) {
     cout << "\tcmpl\t%eax, -4(%rbp)" << endl;
     cout << "\tjl\t.L3" << endl;
     
+    // Metadata
     cout << "\tnop" << endl;
     cout << "\tnop" << endl;
     cout << "\tpopq\t%rbp" << endl;
     cout << "\t.cfi_def_cfa 7, 8" << endl;
-    cout << "\tret" << endl;
+    cout << "\tret" << endl;                                // Return to caller
     cout << "\t.cfi_endproc" << endl;
     
     cout << ".LFE0:" << endl;

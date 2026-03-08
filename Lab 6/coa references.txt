@@ -7,3 +7,5 @@ Dave:
 https://www.tutorialspoint.com/unix_commands/pkill.htm
 https://www.geeksforgeeks.org/linux-unix/kill-command-in-linux-with-examples/
 https://askubuntu.com/questions/350208/what-does-2-dev-null-mean#:~:text=Specifying%202%3E/dev/null,printed%20out%20on%20the%20console.&text=/dev/null%20is%20the%20standard,output%20that%20you%20want%20ignored.
+https://www.geeksforgeeks.org/linux-unix/how-to-exit-when-errors-occur-in-bash-scripts/
+

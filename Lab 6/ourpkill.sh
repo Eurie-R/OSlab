@@ -31,7 +31,7 @@ else
 fi
 
 # Use a temporary file to store the PIDs
-temp_pids = "temp_pids_$$.txt"
+temp_pids="temp_pids_$$.txt"
 
 # Use ourpgrep.sh to find the PIDs matching the pattern and store them in the temporary file
 ./ourpgrep.sh "$pattern" > $temp_pids

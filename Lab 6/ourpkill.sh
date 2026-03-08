@@ -29,3 +29,26 @@ else
     echo "Error: Too many arguments."
     exit 1
 fi
+
+# Use a temporary file to store the PIDs
+temp_pids = "temp_pids_$$.txt"
+
+# Use ourpgrep.sh to find the PIDs matching the pattern and store them in the temporary file
+./ourpgrep.sh "$pattern" > $temp_pids
+
+# Read the PIDS from the temporary file
+for pid in $(cat $temp_pids)
+do
+    # Call the kill command with the specified signal and PID
+    # 2>/dev/null suppresses any error messages that may occur if the process has already been terminated
+    kill $signal $pid 2>/dev/null
+
+    # If the kill command was unsuccessful, display an error message
+    if [ $? -ne 0 ]
+    then
+        echo "Error: Failed to send signal $signal to process with PID $pid."
+    fi
+done
+
+# Clean up the temporary file
+rm $temp_pids

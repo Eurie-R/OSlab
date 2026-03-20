@@ -1,7 +1,8 @@
 #include <iostream>
 #include <unistd.h>
 #include <ctime>
-#include <stdio.h>  
+#include <stdio.h> 
+#include <string> 
 
 using namespace std;
 
@@ -10,12 +11,25 @@ int main() {
 
     if (pid1 == 0) {
         // insert code for first child process  
+        // First child process: execute xclock with process name "myXclock"
+        execl("/usr/bin/xclock", "myXclock", NULL);
+
+        // If execl returns, it means it failed
+        perror("execl failed");
+return 1;
         
     } else {
         pid_t pid2 = fork();
 
         if (pid2 == 0) {
             // insert code for second child process
+            // Second child process: wait for Enter key
+            string input;
+            getline(cin, input);
+
+            // Print "Terminated." with quotes and exit
+            cout << "\"Terminated.\"" << endl;
+            return 0;
             
         } else {
             // Parent Process

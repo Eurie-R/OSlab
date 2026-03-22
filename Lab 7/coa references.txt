@@ -3,3 +3,6 @@ https://linux.die.net/man/3/sleep
 https://www.w3schools.com/cpp/ref_ctime_localtime.asp
 https://stackoverflow.com/questions/1442116/how-can-i-get-the-date-and-time-values-in-a-c-program
 https://en.cppreference.com/w/cpp/io/c/fprintf
+
+Dave:
+https://stackoverflow.com/questions/33508997/waitpid-wnohang-wuntraced-how-do-i-use-these#:~:text=But%20we%20don't%20want,tasks%20to%20another%20child%2C%20whatever.

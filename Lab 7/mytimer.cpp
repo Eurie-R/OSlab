@@ -2,7 +2,9 @@
 #include <unistd.h>
 #include <ctime>
 #include <stdio.h> 
-#include <string> 
+#include <string>
+#include <sys/wait.h>
+#include <signal.h>
 
 using namespace std;
 
@@ -31,11 +33,24 @@ return 1;
             cout << "\"Terminated.\"" << endl;
             return 0;
             
-        } else {
+        } else if (pid2 > 0) {
             // Parent Process
             int printCount = 0;
 
             while (true) {
+
+                // Check the status of the child processes
+                int status;
+
+                // WNOHANG option allows waitpid to return immediately if no child has exited
+                pid_t result1 = waitpid(pid1, &status, WNOHANG);
+                pid_t result2 = waitpid(pid2, &status, WNOHANG);
+
+                // If any child process finished, the parent process should also exit
+                if (result1 > 0 || result2 > 0) {
+                    break; // Exit the loop and terminate the parent process
+                }
+
                 // Sleep for 3 seconds to avoid busy-waiting
                 sleep(3); 
                 printCount++;
@@ -59,6 +74,14 @@ return 1;
                     cout << "\"This program has gone on for far too long. Close the myXclock window or press Enter on this window to exit.\"" << endl;
                 }
             }
+
+            // If the parent exits, give the children the signal to exit
+            kill(pid1, SIGTERM); 
+            kill(pid2, SIGTERM); 
+
+            // To prevent children to became zombies, we can wait for them to exit
+            waitpid(pid1, NULL, 0);
+            waitpid(pid2, NULL, 0);
         }
     }
 

@@ -91,14 +91,14 @@ int main(int argc, char* argv[]) {
     // 0666 read/write permissions for everyone
     int shmId = shmget(SHM_KEY, sizeof(SharedData), IPC_CREAT | 0666);
     if (shmId == -1) {
-        cerr << "Failed to create shared memory segment." << endl;
+        cerr << "Failed to create shared memory segment (shmget)." << endl;
         return 1;
     }
 
     // shmat attaches the shared memory segment to the process's address space
     SharedData* shared_data = (SharedData*)shmat(shmId, NULL, 0);
     if (shared_data == (void*)-1) {
-        cerr << "Failed to attach shared memory segment." << endl;
+        cerr << "Failed to attach shared memory segment (shmat)." << endl;
         return 1;
     }
 }

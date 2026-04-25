@@ -119,9 +119,49 @@ int main(int argc, char* argv[]) {
     input_thread.detach(); // Detach the thread since we don't need to join it later
 
     // Main producer loop
-    unsigned int frame_id = 0; // Unique identifier for each frame
+    unsigned int global_frame_id = 0; // Unique identifier for each frame
     int sleep_ms = 100; // Sleep duration in milliseconds between frame productions
-    
 
+    while (running) {
 
+        // Loop through the pre-laoded frames 
+        for (size_t i = 0; i < frames.size() && running; ++i) {
+
+            // Enter critical section by waiting on the mutex semaphore
+            // sem_num = 0 (targeting the mutex)
+            // sem_op = -1 (decrement to acquire the lock)
+            // sem_flg = SEM_UNDO (automatically release the lock if the process exits)
+            
+            struct sembuf sem_wait_mutex = {0, -1, SEM_UNDO};
+
+            semop(semId, &sem_wait_mutex, 1); // Wait
+
+            // Write to shared memory
+            sharedMem->current_frame = i + 1; // Current frame index (1-based)
+            sharedMem->total_frames = frames.size(); // Total number of frames
+            sharedMem->frame_id = global_frame_id++; // Unique identifier for the frame
+
+            // Copy the string frame data into the shared memory buffer
+            strncpy(sharedMem->frame_data, frames[i].c_str(), MAX_FRAME_SIZE - 1);
+            sharedMem->frame_data[MAX_FRAME_SIZE - 1] = '\0'; // Ensure null-termination
+
+            // Exit critical section by signaling the mutex semaphore
+            struct sembuf sem_signal_mutex = {0, 1, SEM_UNDO};
+            semop(semId, &sem_signal_mutex, 1); // Signal
+
+            // Signal sync semaphore
+            struct sembuf sem_signal_sync = {1, 1, SEM_UNDO}; // sem_num = 1 for sync
+            semop(semId, &sem_signal_sync, 1); // Signal
+
+            // Wait for the next frame production cycle
+            this_thread::sleep_for(chrono::milliseconds(sleep_ms));
+        }
+    }
+
+    // Cleanup
+    shmdt(shared_data); // Detach from shared memory
+
+    cout << "Producer exiting safely." << endl;
+
+    return 0;
 }

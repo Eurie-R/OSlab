@@ -25,7 +25,9 @@ void listenForExit() {
 }
 
 int main(int argc, char* argv[]) {
+
     // Command-line argument parsing
+    
     if (argc != 3) {
         cerr << "Usage: " << argv[0] << " <video.txt> <total_frames>" << endl;
         return 1;
@@ -101,4 +103,25 @@ int main(int argc, char* argv[]) {
         cerr << "Failed to attach shared memory segment (shmat)." << endl;
         return 1;
     }
+
+    // Initialize the starting values of semaphores
+    // Mutex starts at 1 (unlocked state)
+    // Sync starts at 0 (producer will wait until consumer signals)
+    union semun sem_union;
+
+    sem_union.val = 1; // Mutex starts unlocked
+    semctl(semId, 0, SETVAL, sem_union); // Initialize mutex semaphore
+    sem_union.val = 0; // Sync starts at 0
+    semctl(semId, 1, SETVAL, sem_union); // Initialize sync semaphore
+
+    // Start the concurrent thread to listen for user input to exit
+    thread input_thread(listenForExit);
+    input_thread.detach(); // Detach the thread since we don't need to join it later
+
+    // Main producer loop
+    unsigned int frame_id = 0; // Unique identifier for each frame
+    int sleep_ms = 100; // Sleep duration in milliseconds between frame productions
+    
+
+
 }

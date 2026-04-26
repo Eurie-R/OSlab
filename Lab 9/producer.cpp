@@ -104,6 +104,12 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    int semId = semget(SEM_KEY, 2, IPC_CREAT | 0666);
+    if (semId == -1) {
+        cerr << "Failed to create semaphore set (semget)." << endl;
+        return 1;
+    }
+
     // Initialize the starting values of semaphores
     // Mutex starts at 1 (unlocked state)
     // Sync starts at 0 (producer will wait until consumer signals)
@@ -137,13 +143,13 @@ int main(int argc, char* argv[]) {
             semop(semId, &sem_wait_mutex, 1); // Wait
 
             // Write to shared memory
-            sharedMem->current_frame = i + 1; // Current frame index (1-based)
-            sharedMem->total_frames = frames.size(); // Total number of frames
-            sharedMem->frame_id = global_frame_id++; // Unique identifier for the frame
+            shared_data->current_frame = i + 1; // Current frame index (1-based)
+            shared_data->total_frames = frames.size(); // Total number of frames
+            shared_data->frame_id = global_frame_id++; // Unique identifier for the frame
 
             // Copy the string frame data into the shared memory buffer
-            strncpy(sharedMem->frame_data, frames[i].c_str(), MAX_FRAME_SIZE - 1);
-            sharedMem->frame_data[MAX_FRAME_SIZE - 1] = '\0'; // Ensure null-termination
+            strncpy(shared_data->frame_data, frames[i].c_str(), MAX_FRAME_SIZE - 1);
+            shared_data->frame_data[MAX_FRAME_SIZE - 1] = '\0'; // Ensure null-termination
 
             // Exit critical section by signaling the mutex semaphore
             struct sembuf sem_signal_mutex = {0, 1, SEM_UNDO};

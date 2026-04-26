@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
     int last_current_frame = -1; 
     unsigned int frames_skipped = 0; // Tracks the number of frames skipped by the consumer
 
-    // 4. Main consumer loop
+    // Main consumer loop
     while (running) {
         
         // Wait on the sync semaphore ONLY if auto-syncing (FPS == 0)
